@@ -1,0 +1,23 @@
+Jonathan Mychack | John Anderson
+
+Project 2 Report
+
+- overall design of your implementation including how you broke it up into pieces and did it modularly.
+
+For buddy system, we used two linked lists of nodes which contained the available/unavailable memory locations for allocation. We used the available and unavailable holes linked lists to keep track of which buddies were free to use for chunk allocation. We used buddy IDs to keep track of which chunks should merge when freed. We used the size and start/end address of the parent chunk to calculate the size of the child chunks and their start/end addresses respectively. If the buddy IDs match and are free, then they combine and we add them back to the higher index of our linked list.
+
+For slab allocator, we used the same structures as before but we added a descriptor table linked list which we called LinkedListDT and a slab linked list which we called LinkedListSlab (used for the bitmap linked list discussed in class). Whenever we allocate a memory chunk, we simply calculate the slab size and use buddy the same way as before, but for the slab parent. Then, we have to modify the data structures accordingly (e.g. set bitmap value and start/end addresses for the chunks in the slab). When we free, we reset the respective chunk in the bitmap. If the bitmap is completely empty, we delete the entry from the bitmap linked list. If the bitmap linked list is completely empty for a given NodeDT, we delete the entry from LinkedListDT (a.k.a. the descriptor table).
+
+- any challenges/trade-offs that you faced and how you handled them
+
+In order to avoid using many bit-shifting operations, we opted not to use the headers and footers of the memory locations, which made our code redundant and more space was wasted using our alternative solution.
+
+- partitioning of work between team members
+
+John - my_malloc for buddy system and slab allocator; set up data structures for slab
+Jon - my_free for buddy system and slab allocator; created helper functions for data structures; created the linked list data structure for buddy allocation
+Both - assisted the other with their respective functions and bugs; "setup" function
+
+- any specifics/quirks that we need to know about your project.
+
+Our implementation ended up not using the headers for any of the slabs/holes since we stored all relevant information in our data structures.
