@@ -1,0 +1,21 @@
+Jonathan Mychack | John Anderson
+
+Project 3 Report
+
+- overall design of your implementation including how you broke it up into pieces and did it modularly.
+
+We began with the partial implemenation of mm_init, where we sorted out the sigaction call and modified all of the appropriate flags for the handler. Then, we created a singly-linked CircularLinkedList structure that contained Node structures which stored the information required for the two different handling policies. Three functions were made to use the structures: one to initialize the list, one to add Nodes to the list, and one to evict/overwrite Nodes. In the handler function, we partitioned the policies into different chunks via conditionals. The overall implementation of the handler was split as follows: if a page doesn't exist in a frame, a nested if that checks if the handler policy is FIFO, its corresponding else that implies Third Chance is used, and the outer else that implies the page exists in a frame already.  Within the conditionals, we performed operations that the corresponding policy required us to do.
+
+- any challenges/trade-offs that you faced and how you handled them
+
+Most difficulties related to utilizing the last two parameters of the handler function to find the error code and address. These issues were handled by sifting through the man pages for related information and after a bit of trial and error, we were able to get the information corectly. There was also a minor issue learning how mprotect worked, but like the previous difficulty, it was solved by studying the man page for the function.
+
+- partitioning of work between team members
+
+Jonathan Mychack - FIFO, mm_init
+John Anderson - Third Chance
+Both - data structures, data structure functions, helping the other with debugging their section of code
+
+- any specifics/quirks that we need to know about your project.
+
+No quirks are present in our solution that we're aware of.
